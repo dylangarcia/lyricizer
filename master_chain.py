@@ -93,7 +93,7 @@ def make_master_chain(artist):
 
 def get_master_chain(artist, regenerate=False):
     path = "./Master Chains/{}.json".format(artist)
-    if len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) >= 5 and "National Championship Game" not in artist:
+    if len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) <= 5 and "National Championship Game" not in artist:
         regenerate = True
     if regenerate:
         print("Generating Master Chain for {}".format(artist))
