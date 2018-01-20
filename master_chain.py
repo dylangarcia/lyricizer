@@ -90,9 +90,9 @@ def make_master_chain(artist):
     chains = make_chains(artist)
     return markovify.combine(chains)
 
-def get_master_chain(artist):
+def get_master_chain(artist, regenerate=False):
     path = "./Master Chains/{}.json".format(artist)
-    if os.path.exists(path) and len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) >= 5:
+    if os.path.exists(path) and len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) >= 5 and not regenerate:
         print("{} has a Master Chain\n".format(artist))
         with open(path, "r", encoding="utf-8", errors="replace") as f:
             return markovify.NewlineText.from_json(f.read())
