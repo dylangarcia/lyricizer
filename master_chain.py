@@ -20,6 +20,11 @@ def get_artist_id_by_name(artist_name):
 def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
     s = requests.Session()
     artist_id = get_artist_id_by_name(artist_name)
+    if not artist_id:
+        print("{} does not have an ID".format(artist_name))
+        with open("./Sources/{}/404.txt".format(artist_name), "w") as f:
+            pass
+        return
     print("{} has an ID of {}".format(artist_name, artist_id))
     def get_page(page):
         url = "https://genius.com/api/artists/{artist_id}/songs?page={page}&sort=popularity".format(artist_id=artist_id, page=page)
@@ -105,7 +110,9 @@ def make_master_chain(artist):
 
 def get_master_chain(artist, regenerate=False):
     path = "./Master Chains/{}.json".format(artist)
-    if len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) <= 5 and "National Championship Game" not in artist:
+    artist_files = glob.glob("./Sources/{}/*.txt".format(artist))
+    has_404 = os.path.exists("./Sources/{}/404.txt".format(artist))
+    if len(list(artist_files)) <= 5 and "National Championship Game" not in artist and not has_404:
         regenerate = True
     if regenerate:
         print("Generating Master Chain for {}".format(artist))
@@ -114,7 +121,7 @@ def get_master_chain(artist, regenerate=False):
         print("{} has a Master Chain\n".format(artist))
         with open(path, "r", encoding="utf-8", errors="replace") as f:
             return markovify.NewlineText.from_json(f.read())
-    print("{} does not have a Master Chain or has too few sources\n".format(artist))
+    print("{} does not have a Master Chain\n".format(artist))
     return get_master_chain(artist, True)
 
 def save_chain(artist, chain):
