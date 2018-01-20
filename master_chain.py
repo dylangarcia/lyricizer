@@ -129,15 +129,14 @@ def get_master_chain(artist, regenerate=False):
 
     if len(list(artist_files)) <= 5 and "National Championship Game" not in artist:
         regenerate = True
-    if regenerate and not has_404(artist):
-        print("Generating Master Chain for {}".format(artist))
-        make_master_chain(artist)
-    if os.path.exists(path) and not has_404(artist):
+    if os.path.exists(path) and not has_404(artist) and not regenerate:
         print("{} has a Master Chain\n".format(artist))
         with open(path, "r", encoding="utf-8", errors="replace") as f:
             return markovify.NewlineText.from_json(f.read())
-    print("{} does not have a Master Chain\n".format(artist))
-    return get_master_chain(artist, True)
+    else:
+        print("{} does not have a Master Chain, creating it now\n".format(artist))
+        make_master_chain(artist)
+        return get_master_chain(artist, True)
 
 def save_chain(artist, chain):
     path = "./Master Chains/"
