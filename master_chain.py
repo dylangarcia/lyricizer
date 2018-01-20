@@ -4,6 +4,7 @@ import markovify
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
+from contextlib import suppress
 
 def get_artist_id_by_name(artist_name):
     s = requests.Session()
@@ -16,16 +17,19 @@ def get_artist_id_by_name(artist_name):
             result = hit["result"]
             if result["name"].lower() == artist_name.lower():
                 return result["id"]
+    return None
 
 def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
     s = requests.Session()
     artist_id = get_artist_id_by_name(artist_name)
     if not artist_id:
-        print("{} does not have an ID".format(artist_name))
-        with open("./Sources/{}/404.txt".format(artist_name), "w") as f:
-            pass
-        return
-    print("{} has an ID of {}".format(artist_name, artist_id))
+        with surpress(Exception):
+            print("{} does not have an ID".format(artist_name))
+            with open("{}{}.txt".format(_404_PATH, artist_name), "w") as f:
+                pass
+            return
+    with surpress(Exception):
+        print("{} has an ID of {}".format(artist_name, artist_id))
     def get_page(page):
         url = "https://genius.com/api/artists/{artist_id}/songs?page={page}&sort=popularity".format(artist_id=artist_id, page=page)
         resp = s.get(url=url).json()
@@ -66,7 +70,8 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
         path += "{title}.txt".format(title=title)
         with open(path, "w", encoding="utf-8", errors="ignore") as f:
             f.write(lyrics)
-        print("Downloaded {} - {}".format(artist, title))
+        with suppress(Exception):
+            print("Downloaded {} - {}".format(artist, title))
     pages = [get_page(page) for page in range(start_page, end_page + 1)]
     for page in pages:
         songs = extract_songs(page)
@@ -108,11 +113,20 @@ def make_master_chain(artist):
     master_chain = markovify.combine(chains)
     save_chain(artist, master_chain)
 
+_404_PATH = "./Sources/404/"
+def create_404s():
+    if not os.path.exists(_404_PATH):
+        os.makedirs(_404_PATH)
+
+def has_404(artist):
+    create_404s()
+    return os.path.exists("{}{}.txt".format(_404_PATH, artist))
+
 def get_master_chain(artist, regenerate=False):
     path = "./Master Chains/{}.json".format(artist)
     artist_files = glob.glob("./Sources/{}/*.txt".format(artist))
-    has_404 = os.path.exists("./Sources/{}/404.txt".format(artist))
-    if len(list(artist_files)) <= 5 and "National Championship Game" not in artist and not has_404:
+
+    if len(list(artist_files)) <= 5 and "National Championship Game" not in artist:
         regenerate = True
     if regenerate:
         print("Generating Master Chain for {}".format(artist))

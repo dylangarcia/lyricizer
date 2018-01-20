@@ -3,11 +3,16 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from master_chain import get_master_chain
+from master_chain import create_404s
 import markovify
 import glob
 import os
 
 app = Flask(__name__)
+
+@app.before_first_request():
+def before_first_request():
+    create_404s()
 
 @app.route("/", methods=["POST", "GET"])
 def index():
@@ -16,7 +21,7 @@ def index():
     sources = []
     for source in globs:
         source = source.replace(path, "").replace("\\", "").replace("!", "").replace("/", "").replace("/", "")
-        if os.path.exists("{}/404.txt".format(source)):
+        if os.path.exists("{}/404/{}.txt".format(path, source)):
             print("{} has a 404.txt".format(source))
             continue
         sources.append(source)
