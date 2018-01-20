@@ -26,7 +26,11 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
         resp = s.get(url=url).json()
         return resp
     def extract_songs(page):
-        return [song for song in page["response"]["songs"] if song["lyrics_state"] == "complete"]
+        try:
+            return [song for song in page["response"]["songs"] if song["lyrics_state"] == "complete"]
+        except Exception as e:
+            print(str(e), page)
+            return []
     def get_lyrics(song):
         url = song["url"]
         artist = song["primary_artist"]["name"]
