@@ -26,7 +26,7 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
         with suppress(Exception):
             print("{} does not have an ID".format(artist_name))
             with open("{}{}.txt".format(_404_PATH, artist_name), "w") as f:
-                pass
+                f.write("")
             return
     with suppress(Exception):
         print("{} has an ID of {}".format(artist_name, artist_id))
