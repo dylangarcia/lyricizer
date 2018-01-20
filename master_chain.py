@@ -80,7 +80,10 @@ def make_chain(path):
     with open(path, "r", encoding="utf-8", errors="replace") as f:
         data = f.read()
         if not data: return
-        chain = markovify.NewlineText(data)
+        try:
+            chain = markovify.NewlineText(data)
+        except Exception as e:
+            return
     return chain
 
 def make_chains(artist):
