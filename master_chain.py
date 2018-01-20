@@ -23,11 +23,11 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
     s = requests.Session()
     artist_id = get_artist_id_by_name(artist_name)
     if not artist_id:
-        # with suppress(Exception):
-        print("{} does not have an ID".format(artist_name))
-        with open("{}{}.txt".format(_404_PATH, artist_name), "w") as f:
-            f.write("")
-        return
+        with suppress(Exception):
+            print("{} does not have an ID".format(artist_name))
+            with open("{}{}.txt".format(_404_PATH, artist_name), "w") as f:
+                f.write("")
+            return
     with suppress(Exception):
         print("{} has an ID of {}".format(artist_name, artist_id))
     def get_page(page):
@@ -35,11 +35,9 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
         resp = s.get(url=url).json()
         return resp
     def extract_songs(page):
-        try:
+        with suppress(Exception):
             return [song for song in page["response"]["songs"] if song["lyrics_state"] == "complete"]
-        except Exception as e:
-            print(str(e), page)
-            return []
+        return []
     def get_lyrics(song):
         url = song["url"]
         artist = song["primary_artist"]["name"]
@@ -94,10 +92,8 @@ def make_chain(path):
     with open(path, "r", encoding="utf-8", errors="replace") as f:
         data = f.read()
         if not data: return
-        try:
+        with suppress(Exception):
             chain = markovify.NewlineText(data)
-        except Exception as e:
-            return
     return chain
 
 def make_chains(artist):
@@ -117,7 +113,8 @@ _404_PATH = "./Sources/404/"
 def create_404s():
     if not os.path.exists(_404_PATH):
         os.makedirs(_404_PATH)
-
+    with open("{}404.txt".format(_404_PATH), "w") as f:
+        f.write()
 def has_404(artist):
     create_404s()
     return os.path.exists("{}{}.txt".format(_404_PATH, artist))
@@ -128,7 +125,7 @@ def get_master_chain(artist, regenerate=False):
 
     if len(list(artist_files)) <= 5 and "National Championship Game" not in artist:
         regenerate = True
-    if regenerate:
+    if regenerate and not has_404(artist):
         print("Generating Master Chain for {}".format(artist))
         make_master_chain(artist)
     if os.path.exists(path):
