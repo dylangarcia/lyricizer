@@ -40,4 +40,4 @@ def index():
                 pass
         else:
             sentences = [model.make_short_sentence(140, tries=15) for _ in range(5)]
-    return render_template("index.html", sentences=sentences, start_word=start_word, sources=sources)
+    return render_template("index.html", sentences=sentences, start_word=start_word, sources=sources, source=source)

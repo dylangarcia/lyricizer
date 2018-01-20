@@ -56,6 +56,10 @@
         <div class="large-12 cell">
         {% for sentence in sentences %}
             <div class="text-center comment">{{ sentence }}</div>
+          {% else %}
+            <div class="callout warning">
+              <h5 class="text-center">I could not find an artist by the name of '{{ source|e }}'.</h5>
+            </div>
         {% endfor %}
         </div>
       </div>
