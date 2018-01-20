@@ -17,7 +17,7 @@ def get_artist_id_by_name(artist_name):
             if result["name"].lower() == artist_name.lower():
                 return result["id"]
 
-def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=1):
+def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
     s = requests.Session()
     artist_id = get_artist_id_by_name(artist_name)
     print("{} has an ID of {}".format(artist_name, artist_id))
