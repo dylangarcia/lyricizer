@@ -107,6 +107,7 @@ def make_chains(artist):
 
 def make_master_chain(artist):
     chains = make_chains(artist)
+    print(chains, len(chains), artist)
     master_chain = markovify.combine(chains)
     save_chain(artist, master_chain)
 
