@@ -87,7 +87,12 @@ def make_chain(path):
     return chain
 
 def make_chains(artist):
-    return [make_chain(path) for path in get_downloaded_songs(artist)]
+    chains = []
+    for path in get_downloaded_songs(artist):
+        chain = make_chain(path)
+        if not chain: continue
+        chains.append(chain)
+    return chains
 
 def make_master_chain(artist):
     chains = make_chains(artist)
