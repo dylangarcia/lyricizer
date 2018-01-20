@@ -68,7 +68,7 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
 
 def get_downloaded_songs(artist_name):
     path = "./Sources/{}".format(artist_name)
-    if not os.path.exists(path):
+    if not os.path.exists(path) or len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) < 5:
         print("{} does not have any downloaded songs. Downloading now".format(artist_name))
         download_lyrics_by_artist_name(artist_name)
     for file in glob.glob("{}/*.txt".format(path)):
@@ -90,7 +90,7 @@ def make_master_chain(artist):
 
 def get_master_chain(artist):
     path = "./Master Chains/{}.json".format(artist)
-    if os.path.exists(path) and len(list(glob.glob("./Sources/{}/*.txt"))) >= 5:
+    if os.path.exists(path) and len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) >= 5:
         print("{} has a Master Chain\n".format(artist))
         with open(path, "r", encoding="utf-8", errors="replace") as f:
             return markovify.NewlineText.from_json(f.read())
