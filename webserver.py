@@ -32,11 +32,12 @@ def index():
     
     sentences = []
     start_word = request.values.get("start", "")
-    if start_word:
-        try:
-            sentences = [model.make_sentence_with_start(start_word, tries=15) for _ in range(5)]
-        except Exception as e:
-            pass
-    else:
-        sentences = [model.make_short_sentence(140, tries=15) for _ in range(5)]
+    if model:
+        if start_word:
+            try:
+                sentences = [model.make_sentence_with_start(start_word, tries=15) for _ in range(5)]
+            except Exception as e:
+                pass
+        else:
+            sentences = [model.make_short_sentence(140, tries=15) for _ in range(5)]
     return render_template("index.html", sentences=sentences, start_word=start_word, sources=sources)
