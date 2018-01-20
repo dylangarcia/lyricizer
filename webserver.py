@@ -22,7 +22,6 @@ def index():
     for source in globs:
         source = source.replace(path, "").replace("\\", "").replace("!", "").replace("/", "").replace("/", "")
         if os.path.exists("{}/404/{}.txt".format(path, source)):
-            print("{} has a 404.txt".format(source))
             continue
         sources.append(source)
     source = request.values.get("source", "National Championship Game")
