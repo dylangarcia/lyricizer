@@ -49,7 +49,7 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
         artist = song["primary_artist"]["name"]
         title = song["title"]
         lyrics = "\n".join(lyrics)
-        for char in ":<>!?\"'":
+        for char in ":<>!?\"'/":
             title = title.replace(char, "")
         path = "./Sources/{artist}/".format(artist=artist)
         if not os.path.exists(path):
