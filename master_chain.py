@@ -105,6 +105,7 @@ def save_chain(artist, chain):
     if not os.path.exists(path):
         os.makedirs(path)
     path += "{}.json".format(artist)
+    print("Saved a new Master Chain: {}".format(path))
     with open(path, "w") as f:
         f.write(chain.to_json())
         return chain
