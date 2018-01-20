@@ -1,0 +1,62 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation for Sites</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+          <h1>Markov Chain Generator</h1>
+        </div>
+      </div>
+
+      <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+            <form method="GET" action="/">
+              <div class="grid-x grid-padding-x">
+                <div class="large-3 medium-4 cell">
+                  <fieldset class="fieldset">
+                    <legend>Select a Source</legend>
+                    <select name="source">
+                    {% for source in sources %}
+                      <option value="{{ source }}">{{ source }}</option>
+                    {% endfor %}
+                    </select>
+                  </fieldset>
+                </div>
+                <div class="large-6 medium-4 cell">
+                  <fieldset class="fieldset">
+                    <legend>Start Word (Optional)</legend>
+                    <input type="text" placeholder="Enter a start word to seed the results" />
+                  </fieldset>
+                </div>
+                <div class="large-3 medium-4 cell">
+                    <fieldset class="fieldset">
+                      <legend>Magical Button</legend>
+                      <button type="submit" class="primary button expanded">Generate</button>
+                    </fieldset>
+                </div>
+              </div>
+            </form>
+        </div>
+      </div>
+
+      <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+        {% for sentence in sentences %}
+            <div class="text-center comment">{{ sentence }}</div>
+        {% endfor %}
+        </div>
+      </div>
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/what-input/dist/what-input.js"></script>
+    <script src="bower_components/foundation-sites/dist/js/foundation.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
