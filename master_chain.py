@@ -129,6 +129,9 @@ def get_master_chain(artist, regenerate=False):
 
     if len(list(artist_files)) <= 5 and "National Championship Game" not in artist:
         regenerate = True
+    if has_404(artist):
+        print("{} has a 404".format(artist))
+        return
     if os.path.exists(path) and not has_404(artist) and not regenerate:
         print("{} has a Master Chain\n".format(artist))
         with open(path, "r", encoding="utf-8", errors="replace") as f:
