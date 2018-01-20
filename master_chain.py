@@ -19,14 +19,13 @@ def get_artist_id_by_name(artist_name):
                 return result["id"]
     return None
 
-def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
+def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=3):
     s = requests.Session()
     artist_id = get_artist_id_by_name(artist_name)
     if not artist_id:
         with suppress(Exception):
-            print("{} does not have an ID".format(artist_name))
-            with open("{}{}.txt".format(_404_PATH, artist_name), "w") as f:
-                f.write("")
+            print("{} does not have an ID - creating a 404 for it".format(artist_name))
+            create_404(artist_name)
             return
     with suppress(Exception):
         print("{} has an ID of {}".format(artist_name, artist_id))
@@ -107,19 +106,21 @@ def make_chains(artist):
 
 def make_master_chain(artist):
     chains = make_chains(artist)
-    print(chains, len(chains), artist)
-    master_chain = markovify.combine(chains)
-    save_chain(artist, master_chain)
+    try:
+        master_chain = markovify.combine(chains)
+        save_chain(artist, master_chain)
+    except Exception as e:
+        create_404(artist)
 
 _404_PATH = "./Sources/404/"
-def create_404s():
+def create_404(artist="404"):
     if not os.path.exists(_404_PATH):
         os.makedirs(_404_PATH)
-    with open("{}404.txt".format(_404_PATH), "w") as f:
+    with open("{}{}.txt".format(_404_PATH, artist), "w") as f:
         f.write("")
 
 def has_404(artist):
-    create_404s()
+    create_404()
     return os.path.exists("{}{}.txt".format(_404_PATH, artist))
 
 def get_master_chain(artist, regenerate=False):

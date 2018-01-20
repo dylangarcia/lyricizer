@@ -3,7 +3,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from master_chain import get_master_chain
-from master_chain import create_404s
+from master_chain import create_404
 import markovify
 import glob
 import os
@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.before_first_request
 def before_first_request():
-    create_404s()
+    create_404()
 
 @app.route("/", methods=["POST", "GET"])
 def index():
