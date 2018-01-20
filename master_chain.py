@@ -71,8 +71,10 @@ def get_downloaded_songs(artist):
     if not os.path.exists(path) or len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) < 5:
         print("{} does not have any downloaded songs. Downloading now".format(artist))
         download_lyrics_by_artist_name(artist)
+    files = []
     for file in glob.glob("{}/*.txt".format(path)):
-        yield file
+        files.append(file)
+    return files
 
 def make_chain(path):
     with open(path, "r", encoding="utf-8", errors="replace") as f:
