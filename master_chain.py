@@ -57,19 +57,20 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
             lyric = lyric.replace("\"", "").strip()
         return lyrics
     def save_lyrics(song, lyrics):
-        artist = song["primary_artist"]["name"]
+        artists = [artist_name, song["primary_artist"]["name"]]
         title = song["title"]
         lyrics = "\n".join(lyrics)
         for char in ":<>!?\"'/":
             title = title.replace(char, "")
-        path = "./Sources/{artist}/".format(artist=artist)
-        if not os.path.exists(path):
-            os.makedirs(path)
-        path += "{title}.txt".format(title=title)
-        with open(path, "w", encoding="utf-8", errors="ignore") as f:
-            f.write(lyrics)
-        with suppress(Exception):
-            print("Downloaded {} - {}".format(artist, title))
+        for artist in artists:
+            path = "./Sources/{artist}/".format(artist=artist)
+            if not os.path.exists(path):
+                os.makedirs(path)
+            path += "{title}.txt".format(title=title)
+            with open(path, "w", encoding="utf-8", errors="ignore") as f:
+                f.write(lyrics)
+            with suppress(Exception):
+                print("Downloaded {} - {}".format(artist, title))
     pages = [get_page(page) for page in range(start_page, end_page + 1)]
     for page in pages:
         songs = extract_songs(page)
