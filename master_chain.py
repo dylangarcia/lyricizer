@@ -139,7 +139,7 @@ def get_master_chain(artist, regenerate=False):
     else:
         print("{} does not have a Master Chain, creating it now\n".format(artist))
         make_master_chain(artist)
-        return get_master_chain(artist, True)
+        return get_master_chain(artist)
 
 def save_chain(artist, chain):
     path = "./Master Chains/"
