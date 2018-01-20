@@ -66,11 +66,11 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
             if not lyrics: continue
             save_lyrics(song, lyrics)
 
-def get_downloaded_songs(artist_name):
-    path = "./Sources/{}".format(artist_name)
+def get_downloaded_songs(artist):
+    path = "./Sources/{}".format(artist)
     if not os.path.exists(path) or len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) < 5:
-        print("{} does not have any downloaded songs. Downloading now".format(artist_name))
-        download_lyrics_by_artist_name(artist_name)
+        print("{} does not have any downloaded songs. Downloading now".format(artist))
+        download_lyrics_by_artist_name(artist)
     for file in glob.glob("{}/*.txt".format(path)):
         yield file
 
