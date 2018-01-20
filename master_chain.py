@@ -131,7 +131,7 @@ def get_master_chain(artist, regenerate=False):
     if regenerate and not has_404(artist):
         print("Generating Master Chain for {}".format(artist))
         make_master_chain(artist)
-    if os.path.exists(path):
+    if os.path.exists(path) and not has_404(artist):
         print("{} has a Master Chain\n".format(artist))
         with open(path, "r", encoding="utf-8", errors="replace") as f:
             return markovify.NewlineText.from_json(f.read())
