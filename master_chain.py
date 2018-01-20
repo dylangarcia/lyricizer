@@ -23,11 +23,11 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
     s = requests.Session()
     artist_id = get_artist_id_by_name(artist_name)
     if not artist_id:
-        with suppress(Exception):
-            print("{} does not have an ID".format(artist_name))
-            with open("{}{}.txt".format(_404_PATH, artist_name), "w") as f:
-                f.write("")
-            return
+        # with suppress(Exception):
+        print("{} does not have an ID".format(artist_name))
+        with open("{}{}.txt".format(_404_PATH, artist_name), "w") as f:
+            f.write("")
+        return
     with suppress(Exception):
         print("{} has an ID of {}".format(artist_name, artist_id))
     def get_page(page):
