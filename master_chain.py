@@ -88,17 +88,22 @@ def make_chains(artist):
 
 def make_master_chain(artist):
     chains = make_chains(artist)
-    return markovify.combine(chains)
+    master_chain = markovify.combine(chains)
+    save_chain(artist, master_chain)
 
 def get_master_chain(artist, regenerate=False):
     path = "./Master Chains/{}.json".format(artist)
-    if os.path.exists(path) and len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) >= 5 and not regenerate:
+    if len(list(glob.glob("./Sources/{}/*.txt".format(artist)))) >= 5 and "National Championship Game" not in artist:
+        regenerate = True
+    if regenerate:
+        print("Generating Master Chain for {}".format(artist))
+        make_master_chain(artist)
+    if os.path.exists(path):
         print("{} has a Master Chain\n".format(artist))
         with open(path, "r", encoding="utf-8", errors="replace") as f:
             return markovify.NewlineText.from_json(f.read())
     print("{} does not have a Master Chain or has too few sources\n".format(artist))
-    master_chain = make_master_chain(artist)
-    return save_chain(artist, master_chain)
+    return get_master_chain(artist, True)
 
 def save_chain(artist, chain):
     path = "./Master Chains/"
