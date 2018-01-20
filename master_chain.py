@@ -114,7 +114,8 @@ def create_404s():
     if not os.path.exists(_404_PATH):
         os.makedirs(_404_PATH)
     with open("{}404.txt".format(_404_PATH), "w") as f:
-        f.write()
+        f.write("")
+
 def has_404(artist):
     create_404s()
     return os.path.exists("{}{}.txt".format(_404_PATH, artist))
