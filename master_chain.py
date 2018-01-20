@@ -90,11 +90,11 @@ def make_master_chain(artist):
 
 def get_master_chain(artist):
     path = "./Master Chains/{}.json".format(artist)
-    if os.path.exists(path):
+    if os.path.exists(path) and len(glob.glob("./Sources/{}/*.txt")) >= 5:
         print("{} has a Master Chain\n".format(artist))
         with open(path, "r", encoding="utf-8", errors="replace") as f:
             return markovify.NewlineText.from_json(f.read())
-    print("{} does not have a Master Chain\n".format(artist))
+    print("{} does not have a Master Chain or has too few sources\n".format(artist))
     master_chain = make_master_chain(artist)
     return save_chain(artist, master_chain)
 
