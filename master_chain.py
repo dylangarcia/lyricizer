@@ -57,7 +57,7 @@ def download_lyrics_by_artist_name(artist_name, start_page=1, end_page=5):
             lyric = lyric.replace("\"", "").strip()
         return lyrics
     def save_lyrics(song, lyrics):
-        artists = [artist_name, song["primary_artist"]["name"]]
+        artists = set([artist_name, song["primary_artist"]["name"]])
         title = song["title"]
         lyrics = "\n".join(lyrics)
         for char in ":<>!?\"'/":
