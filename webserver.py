@@ -34,8 +34,8 @@ def index():
     sources = []
     for source in globs:
         source = source.replace(path, "").replace("\\", "").replace("!", "").replace("/", "").replace("/", "")
-        if os.path.exists("{}/404/{}.txt".format(path, source)):
-            continue
+        if os.path.exists("{}/404/{}.txt".format(path, source)): continue
+        if len(list(glob.glob(source + "{}*.txt"))) <= 10: continue
         sources.append(source)
     source = request.values.get("source", "National Championship Game")
     if source in sources:
