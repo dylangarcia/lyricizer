@@ -34,12 +34,11 @@ def index():
     sources = []
     for source in globs:
         file_count = len(list(glob.glob(source + "*.txt")))
-        if file_count <= 10: continue
         source = source.replace(path, "").replace("\\", "").replace("!", "").replace("/", "").replace("/", "")
         if os.path.exists("{}/404/{}.txt".format(path, source)): continue
         sources.append((source, file_count))
-        print((source, file_count))
     sources = sorted(sources, key=lambda source: source[1])
+    sources = filter(lambda source, count: count > 10, sources)
     sources = [source for source, count in sources]
     source = request.values.get("source", "National Championship Game")
     if source in sources:
