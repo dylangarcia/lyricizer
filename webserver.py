@@ -38,7 +38,7 @@ def index():
         if os.path.exists("{}/404/{}.txt".format(path, source)): continue
         sources.append((source, file_count))
     sources = sorted(sources, key=lambda source: source[1])
-    sources = filter(lambda source, count: count > 10, sources)
+    sources = filter(lambda tup: tup[1] > 10, sources)
     sources = [source for source, count in sources]
     source = request.values.get("source", "National Championship Game")
     if source in sources:
