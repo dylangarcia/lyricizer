@@ -41,6 +41,7 @@ def index():
     sources = filter(lambda tup: tup[1] > 10, sources)
     sources = [source for source, _count in sources]
     source = request.values.get("source", "National Championship Game")
+    sources.insert(0, "National Championship Game")
     if source in sources:
         sources.remove(source)
     sources.insert(0, source)
