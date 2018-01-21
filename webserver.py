@@ -50,14 +50,15 @@ def index():
     
     sentences = []
     start_word = request.values.get("start", "")
+    NUM_COMMENTS_TO_GENERATE = 10
     if model:
         if start_word:
             try:
-                sentences = [model.make_sentence_with_start(start_word, tries=15) for _ in range(5)]
+                sentences = [model.make_sentence_with_start(start_word, tries=15) for _ in range(NUM_COMMENTS_TO_GENERATE)]
             except Exception as e:
                 pass
         else:
-            sentences = [model.make_short_sentence(140, tries=15) for _ in range(5)]
+            sentences = [model.make_short_sentence(140, tries=15) for _ in range(NUM_COMMENTS_TO_GENERATE)]
     return render_template("index.html", sentences=sentences, start_word=start_word, sources=sources, source=source)
 
 # http://flask.pocoo.org/docs/0.12/patterns/favicon/
