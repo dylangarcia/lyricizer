@@ -12,7 +12,8 @@
     <div class="grid-container">
       <div class="grid-x grid-padding-x">
         <div class="large-12 cell">
-          <h1>Markov Chain Generator</h1>
+          <h1 class="text-center">Lyricizer</h1>
+          <h4 class="text-center subheader">What's even real anymore?<h4>
         </div>
       </div>
 
@@ -48,13 +49,11 @@
       </div>
       
       <div class="grid-x grid-padding-x">
-        <div class="large-12 cell">
+        <div class="large-12 cell results">
           <div class="h3 text-center">Results</div>
+          <hr class="splitter" />
         </div>
-      </div>
-
-      <div class="grid-x grid-padding-x">
-        <div class="large-12 cell">
+        <div class="large-12 cell comments">
         {% for sentence in sentences %}
             <div class="text-center comment">{{ sentence }}</div>
           {% else %}
