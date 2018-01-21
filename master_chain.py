@@ -94,7 +94,7 @@ def make_chain(path):
         if not data: return
         with suppress(Exception):
             chain = markovify.NewlineText(data)
-    return chain
+            return chain
 
 def make_chains(artist):
     chains = []
@@ -120,7 +120,6 @@ def create_404(artist="404"):
         f.write("")
 
 def has_404(artist):
-    create_404()
     return os.path.exists("{}{}.txt".format(_404_PATH, artist))
 
 def get_master_chain(artist, regenerate=False):
