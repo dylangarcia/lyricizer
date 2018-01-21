@@ -3,7 +3,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import url_for
-from flask import redirect
+from flask import send_from_directory
 from flask import g
 from master_chain import get_master_chain
 from master_chain import create_404
@@ -55,6 +55,7 @@ def index():
             sentences = [model.make_short_sentence(140, tries=15) for _ in range(5)]
     return render_template("index.html", sentences=sentences, start_word=start_word, sources=sources, source=source)
 
-@app.route("/favicon.ico")
+# http://flask.pocoo.org/docs/0.12/patterns/favicon/
+@app.route('/favicon.ico')
 def favicon():
-    return redirect(url_for("static", filename="favicon.ico"), code=301)
+    return send_from_directory(url_for("static", filename="favicon.ico"), mimetype='image/vnd.microsoft.icon')
