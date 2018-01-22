@@ -12,7 +12,6 @@ from flask_cache import Cache
 import markovify
 import glob
 import os
-import time
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
@@ -20,11 +19,6 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 @app.before_first_request
 def before_first_request():
     create_404()
-
-@app.before_request
-def before_request():
-    g.request_start_time = time.time()
-    g.request_time = lambda: "%.5fs" % (time.time() - g.request_start_time)
 
 @cache.cached(timeout=60)
 @app.route("/", methods=["POST", "GET"])
@@ -41,6 +35,7 @@ def index():
     sources = sorted(sources, key=lambda source: source[0])
     sources = filter(lambda tup: tup[1] > 10, sources)
     sources = [source for source, _count in sources]
+
     source = request.values.get("source", "National Championship Game")
     sources.insert(0, "National Championship Game")
     if source in sources:
@@ -50,15 +45,17 @@ def index():
     
     sentences = []
     start_word = request.values.get("start", "")
-    NUM_COMMENTS_TO_GENERATE = 10
+    num_comments = request.values.get("num", 10)
+    if not num_comments.isint():
+        num_comments = 10
     if model:
         if start_word:
             try:
-                sentences = [model.make_sentence_with_start(start_word, tries=15) for _ in range(NUM_COMMENTS_TO_GENERATE)]
+                sentences = [model.make_sentence_with_start(start_word, tries=15) for _ in range(num_comments)]
             except Exception as e:
                 pass
         else:
-            sentences = [model.make_short_sentence(140, tries=15) for _ in range(NUM_COMMENTS_TO_GENERATE)]
+            sentences = [model.make_short_sentence(140, tries=15) for _ in range(num_comments)]
     return render_template("index.html", sentences=sentences, start_word=start_word, sources=sources, source=source)
 
 # http://flask.pocoo.org/docs/0.12/patterns/favicon/
