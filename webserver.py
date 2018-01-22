@@ -46,7 +46,7 @@ def index():
     sentences = []
     start_word = request.values.get("start", "")
     num_comments = request.values.get("num", 10)
-    if not num_comments.isint():
+    if not num_comments.idigit():
         num_comments = 10
     if model:
         if start_word:
@@ -61,4 +61,4 @@ def index():
 # http://flask.pocoo.org/docs/0.12/patterns/favicon/
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(url_for("static", filename="favicon.ico"), mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(os.path.join(app.root_path, "static"), "favicon.ico", mimetype='image/vnd.microsoft.icon')
