@@ -49,6 +49,7 @@ def index():
     
     if not num_comments.isdigit():
         num_comments = 10
+    num_comments = int(num_comments)
     if model:
         if start_word:
             try:
