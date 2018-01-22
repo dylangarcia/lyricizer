@@ -46,6 +46,7 @@ def index():
     sentences = []
     start_word = request.values.get("start", "")
     num_comments = request.values.get("num", 10)
+    
     if not num_comments.isdigit():
         num_comments = 10
     if model:
