@@ -8,7 +8,6 @@ from flask import g
 from master_chain import get_master_chain
 from master_chain import create_404
 from flask_cache import Cache
-# from flask_sslify import SSLify
 
 import markovify
 import glob
@@ -16,7 +15,6 @@ import os
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
-# sslify = SSLify(app)
 
 @app.before_first_request
 def before_first_request():
@@ -52,6 +50,7 @@ def index():
     if not num_comments.isdigit():
         num_comments = 10
     num_comments = int(num_comments)
+
     if model:
         if start_word:
             try:
@@ -66,3 +65,9 @@ def index():
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, "static"), "favicon.ico", mimetype='image/vnd.microsoft.icon')
+
+
+@app.route("/.well-known/acme-challenge/P5DQC_UBAGrPMmyFjgvF63bvN1vfMAltHYTRF2BahCA")
+def verify():
+    return "P5DQC_UBAGrPMmyFjgvF63bvN1vfMAltHYTRF2BahCA.xRUtW7d940rdPGLzHBrmLMlGOC4ZnOa211RV65gn8Bk"
+
