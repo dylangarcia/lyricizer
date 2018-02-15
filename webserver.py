@@ -8,12 +8,14 @@ from flask import g
 from master_chain import get_master_chain
 from master_chain import create_404
 from flask_cache import Cache
+from flask_sslify import SSLify
 
 import markovify
 import glob
 import os
 
 app = Flask(__name__)
+sslify = SSLify(app)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 @app.before_first_request
